@@ -1,5 +1,5 @@
 %pg101
-function [alpha, gamma, Alpha_, Gamma_] = stephenson3Disp_InitConfig_Crank(W1,V1,U1,G1,L1,V1_,U1_,G1_,Beta)
+function [Alpha, Gamma, Alpha_, Gamma_] = stephenson3Disp_InitConfig_Crank(W1,V1,U1,G1,L1,V1_,U1_,G1_,Beta)
     theta = dir2D(W1);
     rho_ = dir2D(V1_);
     sigma_ = dir2D(U1_);
@@ -9,7 +9,7 @@ function [alpha, gamma, Alpha_, Gamma_] = stephenson3Disp_InitConfig_Crank(W1,V1
     V_ = norm(V1_);
     U_ = norm(U1_);
     
-    [alpha, gamma] = fourBarSolveDisp_InitConfig_CrankDisp(W1,V1,U1,G1,Beta);
+    [Alpha, Gamma] = fourBarSolveDisp_InitConfig_CrankDisp(W1,V1,U1,G1,Beta);
     
     function f1f2 = simulatenousEq(AlphaGamma_)
             alpha_ = AlphaGamma_(1);
@@ -19,6 +19,7 @@ function [alpha, gamma, Alpha_, Gamma_] = stephenson3Disp_InitConfig_Crank(W1,V1
     end
     for i = 1:length(Beta)
         beta = Beta(i);
+        alpha = Alpha(i);
         [AlphaGamma_] = fsolve(@simulatenousEq,[0 0]);
         Alpha_(i) = AlphaGamma_(1);
         Gamma_(i) = AlphaGamma_(2);
